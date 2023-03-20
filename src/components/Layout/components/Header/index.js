@@ -1,0 +1,35 @@
+/** @format */
+
+import React from "react";
+import classNames from "classnames/bind";
+import styles from "./Header.module.scss";
+import { BsSearch } from "react-icons/bs";
+import { AiOutlineMail } from "react-icons/ai";
+import { IoIosNotificationsOutline } from "react-icons/io";
+import Search from "../../../Search/Button";
+
+const cx = classNames.bind(styles);
+
+const Header = () => {
+  return (
+    <div className={cx("wrapper")}>
+      <div className={cx("left")}>
+        <Search placeholder="Search..."/>
+      </div>
+      <div className={cx("right")}>
+        <div className={cx("action")}>
+          <AiOutlineMail />
+          <IoIosNotificationsOutline />
+          <div className={cx("avatar")}>
+            <img
+              src="https://scontent.fsgn6-1.fna.fbcdn.net/v/t1.6435-9/97422931_1091843461182849_8761038478390591488_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=174925&_nc_ohc=79oB0YcEMF0AX9aN8Zy&_nc_ht=scontent.fsgn6-1.fna&oh=00_AfDaJPIGoGA6bEyVJGTSSmkT6XeGu1p9KVUjziKHXqG2kQ&oe=64397ACD"
+              alt=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Header;

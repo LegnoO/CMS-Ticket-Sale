@@ -1,0 +1,32 @@
+/** @format */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  .logo {
+    img {
+      height: 58px;
+      width: auto;
+      object-fit: cover;
+    }
+  }
+  .menu {
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      .item {
+        button {
+          font-weight: 500;
+          width: 210px;
+          color: var(--icon-color);
+          &:hover {
+            color: #fff;
+            background-color: #ff993c;
+          }
+        }
+      }
+    }
+  }
+}

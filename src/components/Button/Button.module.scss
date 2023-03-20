@@ -1,0 +1,29 @@
+/** @format */
+
+.wrapper {
+  min-width: 100px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  user-select: none;
+  border-radius: 8px;
+  cursor: pointer;
+  .content {
+    font-size: 16px;
+  }
+  .icon {
+    display: flex;
+    align-items: center;
+    font-size: var(--icon-size);
+  }
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  &.small {
+    min-width: 88px;
+  }
+}
