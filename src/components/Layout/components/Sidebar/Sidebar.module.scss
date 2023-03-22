@@ -16,16 +16,23 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+
       .item {
-        button {
+        & > * {
           font-weight: 500;
-          width: 210px;
+          width: 180px;
           color: var(--icon-color);
+
           &:hover {
             color: #fff;
             background-color: #ff993c;
           }
         }
+      }
+
+      .active > * {
+        background-color: #ff993c;
+        color: #fff;
       }
     }
   }

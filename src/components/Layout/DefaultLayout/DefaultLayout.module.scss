@@ -1,0 +1,11 @@
+/** @format */
+
+.wrapper {
+  background-color: #f9f6f4;
+  display: flex;
+  gap: 20px;
+  padding: 25px;
+  .inner {
+    flex: 1;
+  }
+}

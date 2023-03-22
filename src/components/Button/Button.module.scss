@@ -4,6 +4,7 @@
   min-width: 100px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   padding: 9px 16px;
   background-color: transparent;
@@ -26,4 +27,8 @@
   &.small {
     min-width: 88px;
   }
+}
+
+.content-left {
+  justify-content: left;
 }
