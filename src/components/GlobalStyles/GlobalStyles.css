@@ -1,7 +1,7 @@
 /** @format */
 
-// @import 'normalize.css';
-// @import url('https://fonts.cdnfonts.com/css/netflix-font');
+ /* @import 'normalize.css'; */
+ /* @import url('https://fonts.cdnfonts.com/css/netflix-font'); */
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700,900");
 
 :root {
@@ -24,14 +24,14 @@ html {
   margin: 0;
   padding: 0;
   font-family: "Roboto";
-  // font-family: 'Netflix Font', sans-serif;
+   /* font-family: 'Netflix Font', sans-serif; */
   letter-spacing: 0;
 }
 
 body {
   font-family: "";
   font-size: 1.6rem;
-  // line-height: 1.5;
+   /* line-height: 1.5; */
   text-rendering: optimizeSpeed;
 }
 
@@ -57,9 +57,9 @@ li {
 
 img,
 svg {
-  // width: 100%;
-  // display: block;
-  // margin: 0;
+   /* width: 100%;
+   display: block;
+    margin: 0;  */
 }
 
 polygon {

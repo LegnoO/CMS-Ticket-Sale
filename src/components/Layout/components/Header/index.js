@@ -1,12 +1,10 @@
 /** @format */
 
-import React from "react";
 import classNames from "classnames/bind";
 import styles from "./Header.module.scss";
-import { BsSearch } from "react-icons/bs";
+import Search from "../../../Search";
 import { AiOutlineMail } from "react-icons/ai";
 import { IoIosNotificationsOutline } from "react-icons/io";
-import Search from "../../../Search/Button";
 
 const cx = classNames.bind(styles);
 
@@ -14,7 +12,7 @@ const Header = () => {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("left")}>
-        <Search placeholder="Search..."/>
+        <Search placeholder="Search..." />
       </div>
       <div className={cx("right")}>
         <div className={cx("action")}>

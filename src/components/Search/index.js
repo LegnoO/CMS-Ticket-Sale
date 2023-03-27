@@ -7,11 +7,15 @@ import styles from "./Search.module.scss";
 
 const cx = classNames.bind(styles);
 
-const Search = ({ placeholder }) => {
+const Search = ({ placeholder, onChange, search }) => {
   return (
     <div className={cx("wrapper")}>
       <form>
-        <input placeholder={placeholder} spellCheck={false} />
+        <input
+          onChange={onChange}
+          placeholder={placeholder}
+          spellCheck={false}
+        />
         <BsSearch className={cx("icon")} />
       </form>
     </div>

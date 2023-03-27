@@ -1,39 +1,31 @@
 /** @format */
+import "./datePicker.css";
 import { useState, useEffect } from "react";
-import { fetchTicket } from "../../features/ticketSlice";
+import {
+  fetchTicket,
+  findTicketByDate,
+  searchTicket,
+} from "../../features/ticketSlice";
 import { FiFilter } from "react-icons/fi";
 import { GoPrimitiveDot } from "react-icons/go";
 import { dateFormat } from "../../services/date";
 import { useDispatch, useSelector } from "react-redux";
+import { addData } from "../../api";
+
 import classNames from "classnames/bind";
 import styles from "./TicketList.module.scss";
-import Search from "../../components/Search/Button";
+import Search from "../../components/Search";
 import Button from "../../components/Button";
 import TicketFilter from "../../components/Layout/components/Modal/TicketFilter";
-
-// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import ModalWrapper from "../../components/Layout/components/Modal/ModalWrapper";
 const cx = classNames.bind(styles);
 
 const TicketList = () => {
+  const [modal, toggleModal] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.firebase.data);
-  const status = useSelector((state) => state.firebase.status);
-  const error = useSelector((state) => state.firebase.error);
-
-  // const [data, setData] = useState([]);
-  // const getData = async () => {
-  //   const result = await fetchData();
-  //   // console.log(
-  //   //   result.filter((data) => {
-  //   //     return data;
-  //   //   })
-  //   // );
-  //   result.sort((a, b) => a.data.stt - b.data.stt);
-  //   setData(result);
-  // };
-
+  const { data } = useSelector((state) => state.firebase);
 
   const ticketStatus = (data) => {
     const status = data;
@@ -54,9 +46,10 @@ const TicketList = () => {
     );
   };
 
-  useEffect(() => {
-    dispatch(fetchTicket("ticket"));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchTicket("ticket"));
+  //   // addData();
+  // }, [dispatch]);
 
   const titleTicket = [
     "STT",
@@ -69,28 +62,41 @@ const TicketList = () => {
     "Cổng",
   ];
 
-  // console.log(new Date("2023-03-20"));
+  const handleSearch = (e) => {
+    setSearchValue(e.target.value);
+    dispatch(searchTicket({ data, searchValue }));
+  };
+
   return (
     <div className={cx("wrapper")}>
-      {/* <TicketFilter /> */}
+      <ModalWrapper modal={modal} toggleModal={toggleModal}>
+        <TicketFilter />
+      </ModalWrapper>
+
       <h2>Danh sách vé</h2>
       <div className={cx("nav")}>
-        <Search className={cx("search-nav")} placeholder="Tìm bằng số vé" />
+        <Search
+          onChange={handleSearch}
+          className={cx("search-nav")}
+          placeholder="Tìm bằng số vé"
+        />
         <div className={cx("action-btn")}>
-          <Button iconLeft icon={<FiFilter />}>
-            Lọc vé
-          </Button>
+          <span
+            onClick={(e) => {
+              e.preventDefault();
+              toggleModal((prev) => !prev);
+            }}>
+            <Button iconLeft icon={<FiFilter />}>
+              Lọc vé
+            </Button>
+          </span>
+
           <Button className={cx("export-btn")}>Xuất file (.csv)</Button>
         </div>
       </div>
 
-      {/* <div className={cx("table")}> */}
-      {/* <ul className={cx("list")}>
-                {titleTicket.map((data) => (
-                  <li className={cx("name")}>{data}</li>
-                ))}
-              </ul> */}
       <div className={cx("data-list")}>
+        {data && console.log(data)}
         <table>
           <thead>
             <tr className={cx("thread")}>
@@ -102,22 +108,19 @@ const TicketList = () => {
             </tr>
           </thead>
           <tbody className={cx("list")}>
-            {data?.map((data) => {
+            {data?.map((data, index) => {
               return (
                 <tr key={data.id} className={cx("item")}>
-                  <td id="stt">{data.data.stt}</td>
-                  <td id="booking-code">{data.data.blockingcode}</td>
+                  <td id="stt">{index + 1}</td>
+                  <td id="booking-code">{data.data.blocking_code}</td>
                   <td id="ticket-number">{data.data.ticket_number}</td>
                   <td id="event-name">{data.data.event}</td>
-
                   {ticketStatus(data.data.status)}
-
                   <td id="date-use">
                     {dateFormat(data.data.date_use.seconds)}
                   </td>
                   <td id="issuance_date">
                     {dateFormat(data.data.issuance_date.seconds)}
-                    {/* {console.log(dateFormat(1496275200))} */}
                   </td>
                   <td id="gate">{data.data.gate}</td>
                 </tr>
@@ -126,7 +129,6 @@ const TicketList = () => {
           </tbody>
         </table>
       </div>
-      {/* </div> */}
     </div>
   );
 };

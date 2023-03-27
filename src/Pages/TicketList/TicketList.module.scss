@@ -1,12 +1,6 @@
 /** @format */
 
 .wrapper {
-  padding: 20px;
-  margin-top: 25px;
-  border-radius: 24px;
-  height: 963px;
-  width: 100%;
-  background-color: #fff;
   .nav {
     display: flex;
     margin: 30px 0;
@@ -45,6 +39,7 @@
       & > thead > tr {
         background-color: #f1f4f8;
         & > th {
+          white-space: nowrap;
           text-align: start;
           color: #000;
           font-weight: 450;
@@ -55,7 +50,7 @@
         & > tr * {
           text-align: start;
           color: #1e0d03;
-          font-size: 14px;
+          font-size: 13px;
         }
         .item {
           #status {

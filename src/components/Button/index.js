@@ -15,6 +15,7 @@ const Button = ({
   iconRight,
   className,
   to,
+  onClick,
 }) => {
   let Comp = "button";
 
@@ -22,6 +23,10 @@ const Button = ({
   if (to) {
     Comp = Link;
     props.to = to;
+  }
+
+  if (onClick) {
+    props.onClick = onClick;
   }
 
   const classes = cx("wrapper", {

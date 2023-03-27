@@ -4,5 +4,10 @@ https://www.figma.com/file/gl5nYAfYK6VxhAU1W39Cfd/ReactJS---CMS-Ticket-Sale-Appl
 https://www.youtube.com/watch?v=sx8593dYM_g
 
 https://rubick-vue.left4code.com/?fbclid=IwAR1OrIQ2RYUDYmA9mrYXglNWSmnYy1_KqFu7wc_WTl3W80jLWtr3E0fpchY
-
+https://jsfiddle.net/plan/V2Q58
 https://mui.com/x/react-date-pickers/date-picker/
+
+
+
+
+https://stackoverflow.com/questions/40522923/how-to-remove-the-line-rule-of-an-axis-in-chart-js
