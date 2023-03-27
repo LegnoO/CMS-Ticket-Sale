@@ -84,10 +84,17 @@ const Home = () => {
     },
     elements: {},
     plugins: {
+      tooltip: {
+        mode: "index",
+        intersect: false,
+      },
+      hover: {
+        mode: "nearest",
+        intersect: false,
+      },
       legend: {
         display: false,
       },
-      tooltip: {},
     },
     title: {
       display: true,
