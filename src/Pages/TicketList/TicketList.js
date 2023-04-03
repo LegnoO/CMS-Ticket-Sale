@@ -10,31 +10,35 @@ import { FiFilter } from "react-icons/fi";
 import { GoPrimitiveDot } from "react-icons/go";
 import { dateFormat } from "../../services/date";
 import { useDispatch, useSelector } from "react-redux";
-import { addData } from "../../api";
+import { FiMoreVertical } from "react-icons/fi";
+import { addData, updateData } from "../../api";
 
 import classNames from "classnames/bind";
 import styles from "./TicketList.module.scss";
 import Search from "../../components/Search";
 import Button from "../../components/Button";
 import TicketFilter from "../../components/Layout/components/Modal/TicketFilter";
+import TicketUpdate from "../../components/Layout/components/Modal/TicketUpdate";
+
 import ModalWrapper from "../../components/Layout/components/Modal/ModalWrapper";
 const cx = classNames.bind(styles);
 
 const TicketList = () => {
-  const [modal, toggleModal] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
+  const [modalFilterTicket, toggleModalFilterTicket] = useState(false);
+  const [updateTicket, setUpdateTicket] = useState({});
+  const [modalEdit, toggleModalEdit] = useState(false);
 
   const dispatch = useDispatch();
-  const { data } = useSelector((state) => state.firebase);
+  const { data, isLoading } = useSelector((state) => state.firebase);
 
   const ticketStatus = (data) => {
     const status = data;
     let statusClass = cx("");
-    if (status === "Đã hết hạn") {
+    if (status === "Hết hạn") {
       statusClass = cx("red");
-    } else if (status === "Đã sử dụng") {
+    } else if (status === "Chưa sử dụng") {
       statusClass = cx("green");
-    } else if (status === "Đang sử dụng") {
+    } else if (status === "Đã sử dụng") {
       statusClass = cx("normal");
     }
     return (
@@ -46,10 +50,9 @@ const TicketList = () => {
     );
   };
 
-  // useEffect(() => {
-  //   dispatch(fetchTicket("ticket"));
-  //   // addData();
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchTicket("ticket"));
+  }, []);
 
   const titleTicket = [
     "STT",
@@ -60,43 +63,49 @@ const TicketList = () => {
     "Ngày sử dụng",
     "Ngày xuất vé",
     "Cổng",
+    "",
   ];
-
-  const handleSearch = (e) => {
-    setSearchValue(e.target.value);
-    dispatch(searchTicket({ data, searchValue }));
-  };
 
   return (
     <div className={cx("wrapper")}>
-      <ModalWrapper modal={modal} toggleModal={toggleModal}>
+      <ModalWrapper
+        modal={modalFilterTicket}
+        toggleModal={toggleModalFilterTicket}>
         <TicketFilter />
+      </ModalWrapper>
+
+      <ModalWrapper modal={modalEdit} toggleModal={toggleModalEdit}>
+        <TicketUpdate data={updateTicket} />
       </ModalWrapper>
 
       <h2>Danh sách vé</h2>
       <div className={cx("nav")}>
-        <Search
-          onChange={handleSearch}
-          className={cx("search-nav")}
-          placeholder="Tìm bằng số vé"
-        />
+        <Search className={cx("search-nav")} placeholder="Tìm bằng số vé" />
         <div className={cx("action-btn")}>
           <span
             onClick={(e) => {
               e.preventDefault();
-              toggleModal((prev) => !prev);
+              toggleModalFilterTicket((prev) => !prev);
             }}>
-            <Button iconLeft icon={<FiFilter />}>
+            <Button
+              borderColor="#ff993c"
+              color="#ff993c"
+              iconLeft
+              icon={<FiFilter />}>
               Lọc vé
             </Button>
           </span>
 
-          <Button className={cx("export-btn")}>Xuất file (.csv)</Button>
+          <Button
+            borderColor="#ff993c"
+            color="#ff993c"
+            className={cx("export-btn")}>
+            Xuất file (.csv)
+          </Button>
         </div>
       </div>
 
       <div className={cx("data-list")}>
-        {data && console.log(data)}
         <table>
           <thead>
             <tr className={cx("thread")}>
@@ -123,6 +132,24 @@ const TicketList = () => {
                     {dateFormat(data.data.issuance_date.seconds)}
                   </td>
                   <td id="gate">{data.data.gate}</td>
+                  <td>
+                    <button
+                      onClick={(e) => {
+                        setUpdateTicket({
+                          id: data.id,
+                          blocking_code: data.data.blocking_code,
+                          gate_type: data.data.gate_type,
+                          event: data.data.event,
+                          number: data.data.ticket_number,
+                          date: data.data.issuance_date,
+                        });
+                        e.preventDefault();
+                        toggleModalEdit((prev) => !prev);
+                      }}
+                      className={cx("edit-button")}>
+                      <FiMoreVertical />
+                    </button>
+                  </td>
                 </tr>
               );
             })}

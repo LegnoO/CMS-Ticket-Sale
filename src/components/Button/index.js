@@ -16,10 +16,14 @@ const Button = ({
   className,
   to,
   onClick,
+  backgroundColor,
+  borderColor,
+  color,
 }) => {
   let Comp = "button";
 
   const props = {};
+
   if (to) {
     Comp = Link;
     props.to = to;
@@ -35,7 +39,16 @@ const Button = ({
   });
 
   return (
-    <Comp className={classes} {...props}>
+    <Comp
+      className={classes}
+      {...props}
+      style={{
+        "--border-color": borderColor ? ` ${borderColor}` : "transparent",
+        "--color": color ? ` ${color}` : "#000",
+        "--background-color": backgroundColor
+          ? ` ${backgroundColor}`
+          : "transparent",
+      }}>
       {iconLeft && <span className={cx("icon")}>{icon}</span>}
       <span className={cx("content")}>{children}</span>
       {iconRight && <span className={cx("icon")}>{icon}</span>}

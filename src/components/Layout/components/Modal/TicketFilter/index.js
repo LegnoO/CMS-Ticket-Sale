@@ -7,9 +7,8 @@ import Button from "../../../../Button";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendarAlt } from "react-icons/fa";
-import ModalWrapper from "../ModalWrapper";
-import CustomInput from "./CustomInput";
-
+import DateInput from "../../../../Input/InputDate";
+import { addData } from "../../../../../api";
 import { findTicketByDate } from "../../../../../features/ticketSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -18,18 +17,20 @@ const cx = classNames.bind(styles);
 const TicketFilter = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [checkStatus, setCheckStatus] = useState();
-  const [checkGate, setCheckGate] = useState();
-  const [checkAll, setCheckAll] = useState(false);
+  const [checkInput, setCheckInput] = useState({
+    statusData: ["Đã sử dụng", "Chưa sử dụng", "Hết hạn"],
+    gateData: ["Cổng 1", "Cổng 2", "Cổng 3", "Cổng 4", "Cổng 5"],
+    status: "Tất cả",
+    gate: true,
+  });
+
   const inputRef = useRef();
   const dispatch = useDispatch();
   const data = useSelector((state) => state.firebase.data);
-  useEffect(() => {}, []);
 
   const dateFilter = {
-    startDate: startDate.getTime() / 1000,
-    endDate: endDate.getTime() / 1000,
-    // testDate: new Date("03/26/2023").getTime() / 1000,
+    startDate: startDate / 1000,
+    endDate: endDate / 1000,
   };
 
   const checkStatusInput = [
@@ -48,7 +49,14 @@ const TicketFilter = () => {
   ];
 
   const handleSearchTicket = () => {
-    dispatch(findTicketByDate({ data, dateFilter }));
+    dispatch(
+      findTicketByDate({
+        data,
+        dateFilter,
+        checkStatus: checkInput.statusData,
+        checkGate: checkInput.gateData,
+      })
+    );
   };
 
   return (
@@ -60,22 +68,18 @@ const TicketFilter = () => {
       <h2>Lọc vé</h2>
 
       <div className={cx("date")}>
-        {/* defaultValue={new Date().toISOString().substr(0, 10)} */}
         <div className={cx("date-picker")}>
           <div className={cx("content")}>
             <h4>Từ ngày</h4>
             <div className={cx("start-date")}>
               <DatePicker
-                classNames="test"
                 selected={startDate.setHours(0, 0, 0, 0)}
                 onChange={(date) => {
                   setStartDate(date);
-                  console.log(dateFilter);
                 }}
                 dateFormat="dd/MM/yyyy"
-                timeZone="Asia/Shanghai"
                 customInput={
-                  <CustomInput
+                  <DateInput
                     icon={<FaCalendarAlt style={{ color: "#FF993C" }} />}
                     ref={inputRef}
                   />
@@ -88,14 +92,14 @@ const TicketFilter = () => {
             <div className={cx("end-date")}>
               <DatePicker
                 classNames="test"
-                selected={endDate.setHours(23, 59, 59, 59)}
+                selected={endDate.setHours(0, 0, 0, 0)}
                 onChange={(date) => {
+                  console.log(date);
                   setEndDate(date);
-                  console.log(dateFilter);
                 }}
                 dateFormat="dd/MM/yyyy"
                 customInput={
-                  <CustomInput
+                  <DateInput
                     icon={<FaCalendarAlt style={{ color: "#FF993C" }} />}
                     ref={inputRef}
                   />
@@ -113,11 +117,25 @@ const TicketFilter = () => {
           {checkStatusInput.map((data, index) => (
             <div key={index} className={cx("checkbox-item")}>
               <input
-                onChange={(e) => setCheckStatus(e.target.name)}
-                id={data.name}
-                name={data.name}
                 type="radio"
-                checked={checkStatus === data.name}
+                name={data.name}
+                checked={checkInput.status === data.label}
+                onChange={() => {
+                  setCheckInput({
+                    ...checkInput,
+                    status: data.label,
+                    statusData:
+                      data.label === "Tất cả"
+                        ? checkStatusInput
+                            .filter((value) => {
+                              return value.label !== "Tất cả";
+                            })
+                            .map((value) => {
+                              return value.label;
+                            })
+                        : [data.label],
+                  });
+                }}
               />
               <label htmlFor={data.name}>{data.label}</label>
             </div>
@@ -130,10 +148,18 @@ const TicketFilter = () => {
         <div className={cx("checkbox")}>
           <div className={cx("checkbox-item")}>
             <input
-              onChange={(e) => {
-                setCheckAll((prev) => !prev);
-                setCheckGate(e.target.name);
+              onChange={() => {
+                setCheckInput({
+                  ...checkInput,
+                  gate: !checkInput.gate,
+                  gateData: !checkInput.gate
+                    ? checkGateInput.map((value) => {
+                        return value.label;
+                      })
+                    : [],
+                });
               }}
+              checked={checkInput.gate}
               type="checkbox"
               id="gate_all"
               name="gate_all"
@@ -144,13 +170,20 @@ const TicketFilter = () => {
           {checkGateInput.map((data, index) => (
             <div key={index} className={cx("checkbox-item")}>
               <input
-                onChange={(e) => {
-                  setCheckGate(e.target.name);
+                onChange={() => {
+                  setCheckInput({
+                    ...checkInput,
+                    gateData: checkInput.gateData.includes(data.label)
+                      ? checkInput.gateData.filter((value) => {
+                          return value !== data.label;
+                        })
+                      : [...checkInput.gateData, data.label],
+                  });
                 }}
                 type="checkbox"
-                id={data.name}
                 name={data.name}
-                disabled={checkAll}
+                disabled={checkInput.gate}
+                checked={checkInput.gateData.includes(data.label)}
               />
               <label htmlFor={data.name}>{data.label}</label>
             </div>
@@ -159,18 +192,14 @@ const TicketFilter = () => {
       </div>
 
       <div className={cx("button")}>
-        {/* <span
+        <span
           onClick={() => {
-            console.log(dateFilter, " ", {
-              startDate: new Date(startDate),
-              endDate: new Date(endDate),
-            });
-
-            console.log("nhập ", new Date(1681059600 * 1000));
+            // addData();
+            console.log(checkInput);
           }}
           style={{ display: "" }}>
           <Button>Show</Button>
-        </span> */}
+        </span>
 
         <span onClick={handleSearchTicket}>
           <Button className={cx("")}>Lọc</Button>

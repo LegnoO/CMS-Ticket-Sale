@@ -11,9 +11,7 @@
       flex: 1;
       button {
         display: flex;
-        font-weight: 600;
-        color: #ff993c;
-        border: 1px solid #ff993c;
+        font-weight: 500;
         &:hover {
           color: #fff;
           background-color: #ff993c;
@@ -31,9 +29,10 @@
       border-collapse: collapse;
       width: 100%;
 
-      & th,
-      & td {
+      th,
+      td {
         padding: 10px 20px;
+       
       }
 
       & > thead > tr {
@@ -53,10 +52,25 @@
           font-size: 13px;
         }
         .item {
+          position: relative;
           #status {
             button {
               min-width: 140px;
               border-radius: 8px;
+            }
+          }
+          .edit-button {
+            // display: flex;
+            // position: absolute;
+            // top: 0;
+            // right: 0;
+            // transform: translate(0%, 125%);
+
+            background-color: transparent;
+
+            cursor: pointer;
+            & > * {
+              font-size: 16px;
             }
           }
           .normal {

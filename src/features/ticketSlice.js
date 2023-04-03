@@ -58,11 +58,19 @@ const ticketSlice = createSlice({
           data: action.payload,
         });
       })
+      .addCase(searchTicket.rejected, (state, action) => {
+        Object.assign(state, {
+          isLoading: false,
+          status: "failed",
+          error: action.error.message,
+        });
+      })
       .addCase(searchTicket.pending, (state, action) => {
         Object.assign(state, {
           isLoading: true,
         });
       })
+
       .addCase(searchTicket.fulfilled, (state, action) => {
         Object.assign(state, {
           isLoading: false,

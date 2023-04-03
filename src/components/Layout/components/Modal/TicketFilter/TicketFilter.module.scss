@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+
   h2 {
     margin-bottom: 15px;
   }
@@ -16,19 +17,7 @@
           font-weight: 500;
           margin-bottom: 10px;
         }
-        .start-date,
-        .end-date {
-          border: 1px solid #a5a8b1;
-          display: flex;
-          align-items: center;
-          padding: 8px 12px 8px 12px;
-          border-radius: 8px;
-        }
       }
-    }
-
-    input {
-      width: 85px;
     }
 
     // input {
@@ -92,8 +81,14 @@
         display: inline-flex;
         align-items: center;
         input {
+          &:checked {
+            background-color: blue;
+            border-color: red;
+            color: blue;
+          }
           height: 18px;
           width: 18px;
+
           & + label {
             margin-left: 5px;
           }

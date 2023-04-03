@@ -1,29 +1,29 @@
 /** @format */
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import { Fragment } from "react";
 import DefaultLayout from "./components/Layout/DefaultLayout";
-import TicketControl from "./Pages/TicketControl/TicketControl";
+import TicketControl from "./Pages/TicketControl";
 import TicketList from "./Pages/TicketList/TicketList";
 import Setting from "./Pages/Setting/Setting";
 import Home from "./Pages/Home/Home";
 
 function Routing() {
-
   const pages = [
     {
-      page: <Home />,
+      component: <Home />,
       path: "/",
     },
     {
-      page: <TicketList />,
+      component: <TicketList />,
       path: "/list",
     },
     {
-      page: <TicketControl />,
+      component: <TicketControl />,
       path: "/control",
+      layout: null,
     },
     {
-      page: <Setting />,
+      component: <Setting />,
       path: "/setting",
     },
   ];
@@ -32,11 +32,18 @@ function Routing() {
     <Router>
       <Routes>
         {pages.map((route, index) => {
+          const page = route.component;
+          let Layout = DefaultLayout;
+          if (route.layout === null) {
+            Layout = Fragment;
+          } else {
+            Layout = DefaultLayout;
+          }
           return (
             <Route
               key={index}
               path={route.path}
-              element={<DefaultLayout>{route.page}</DefaultLayout>}
+              element={<Layout>{page}</Layout>}
             />
           );
         })}

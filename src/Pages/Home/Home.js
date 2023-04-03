@@ -1,7 +1,7 @@
 /** @format */
 
-import React from "react";
-import { Line } from "react-chartjs-2";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import { Line, Doughnut } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   LineElement,
@@ -22,11 +22,13 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
-  ArcElement
+  ArcElement,
+  ChartDataLabels
 );
 
 const Home = () => {
-  const data = {
+ 
+  const LineData = {
     labels: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "CN"],
     datasets: [
       {
@@ -49,7 +51,19 @@ const Home = () => {
     ],
   };
 
-  const options = {
+  const DoughnutData = {
+    labels: ["Vé chưa sử dụng", "Vé đã sử dụng"],
+    datasets: [
+      {
+        data: [13568, 56024],
+        label: " Gói gia đình",
+        borderColor: ["#FF8A48", "#4F75FF"],
+        backgroundColor: ["#FF8A48", "#4F75FF"],
+      },
+    ],
+  };
+
+  const LineOptions = {
     layout: {
       padding: 20,
     },
@@ -84,6 +98,7 @@ const Home = () => {
     },
     elements: {},
     plugins: {
+      datalabels: { display: false },
       tooltip: {
         mode: "index",
         intersect: false,
@@ -102,10 +117,74 @@ const Home = () => {
     },
   };
 
+  const DoughnutOptions = {
+    plugins: {
+      datalabels: {
+        padding: 5,
+        borderRadius: 4,
+        borderWidth: 1,
+        borderColor: "#ccc",
+        anchor: "end",
+        display: true,
+        color: "#000",
+        backgroundColor: "#fff",
+        formatter: function (value) {
+          return Math.round(value);
+        },
+        boxShadow: "2px 2px 6px rgba(0, 0, 0, 0.25)",
+      },
+      tooltip: {
+        mode: "index",
+        intersect: false,
+        enabled: true,
+      },
+      hover: {
+        mode: "nearest",
+        intersect: false,
+      },
+      legend: {
+        display: false,
+      },
+    },
+    title: {
+      display: true,
+      text: "Doughnut Chart",
+      color: "blue",
+    },
+  };
   return (
-    <div>
-      <Line width={"90%"} height={"300"} data={data} options={options} />
-    </div>
+    <>
+      <div>
+        <Line
+          width={"90%"}
+          height={"300"}
+          data={LineData}
+          options={LineOptions}
+        />
+      </div>
+      <div style={{ display: "flex", gap: "15%", justifyContent: "center" }}>
+        <div
+          style={{
+            width: "301px",
+            height: "312px",
+          }}>
+          <h4 style={{ textAlign: "center", marginBottom: " 20px" }}>
+            Gói Gia đình
+          </h4>
+          <Doughnut data={DoughnutData} options={DoughnutOptions} />
+        </div>
+        <div
+          style={{
+            width: "301px",
+            height: "312px",
+          }}>
+          <h4 style={{ textAlign: "center", marginBottom: " 20px" }}>
+            Gói sự kiện
+          </h4>
+          <Doughnut data={DoughnutData} options={DoughnutOptions} />
+        </div>
+      </div>
+    </>
   );
 };
 
