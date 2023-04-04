@@ -37,7 +37,7 @@ export const filterTicketsByDate = ({
       ((value.data.date_use.seconds >= dateFilter.startDate &&
         value.data.date_use.seconds <= dateFilter.endDate) ||
         (value.data.issuance_date.seconds >= dateFilter.startDate &&
-          value.data.issuance_date.seconds <= dateFilter.endDate)) &&
+          value.data.issuance_date.second <= dateFilter.endDate)) &&
       checkStatus.includes(value.data.status) &&
       checkGate.includes(value.data.gate)
     );
@@ -93,7 +93,7 @@ const randomTicketType = () => {
 
 export const addData = async () => {
   await addDoc(collection(db, "ticket"), {
-    blocking_code: "ALT20210501",
+    blockingcode: "ALT20210501",
     date_use: randomDateInRange("2022-01-01", "2023-12-31"),
     event: "Sự kiện khai giảng 2023",
     gate: `Cổng ${Math.round(Math.random() * (5 - 1) + 1)}`,
