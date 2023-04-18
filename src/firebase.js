@@ -11,9 +11,6 @@ import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
   authDomain: "first-project-b9c0e.firebaseapp.com",
   projectId: "first-project-b9c0e",
-  storageBucket: "first-project-b9c0e.appspot.com",
-  messagingSenderId: "766954088837",
-  appId: "1:766954088837:web:956232eaf2a88e90b8fcec",
   measurementId: "G-RLNNPBHCCP",
 };
 
